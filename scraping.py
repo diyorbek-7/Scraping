@@ -4,11 +4,9 @@ import pandas as pd
 from time import sleep
 import logging
 
-# Set up logging configuration
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 log = logging.getLogger("OLXScraper")
 
-# List of URLs for transport-related categories
 transport_urls = [
     "https://www.olx.uz/transport/legkoye-avtomobili/currency-UZS/",
     "https://www.olx.uz/transport/mototsikly/",
@@ -19,7 +17,6 @@ transport_urls = [
 ]
 
 
-# Retrieve and process webpage content
 def fetch_content(web_address):
     log.info(f"Attempting to access {web_address}")
     try:
@@ -33,7 +30,6 @@ def fetch_content(web_address):
         return None
 
 
-# Collect ad details from the webpage
 def gather_ad_details(soup, section_name):
     if not soup:
         return []
@@ -65,7 +61,6 @@ def gather_ad_details(soup, section_name):
     return collected_data
 
 
-# Store data in a CSV file with a simpler name
 def store_results(data, section):
     if not data:
         log.warning(f"No items to store for {section}")
@@ -79,12 +74,10 @@ def store_results(data, section):
         log.error(f"Could not save data for {section}: {error}")
 
 
-# Extract category name from URL
 def get_section_name(web_link):
     return web_link.split('/')[-2] if web_link.endswith('/') else web_link.split('/')[-1]
 
 
-# Process each category
 def process_category(web_link):
     page_content = fetch_content(web_link)
     if page_content:
@@ -95,7 +88,6 @@ def process_category(web_link):
         sleep(3)
 
 
-# Main execution flow
 def run_scraper():
     log.info("Beginning OLX.uz data collection...")
     for url in transport_urls:
